@@ -1,9 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import LiveCursors from './cursor/liveCursors'
 import { useMyPresence, useOthers } from '@/liveblocks.config'
 import CursorChat from './cursor/cursorChat';
 import { CursorMode } from '@/types/type';
-const Live = () => {
+
+type Props = {
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>; 
+}
+
+const Live = ({canvasRef}: Props) => {
   const others = useOthers();
   const [{ cursor }, updateMyPresence] = useMyPresence() as any;
   
@@ -61,14 +65,14 @@ const Live = () => {
 
   return (
     <div
+      id='canvas'
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       onPointerDown={handlePointerDown}
       className='h-[100vh] w-full flex justify-center items-center text-center
         border-2 border-color'
     >
-      <h1 className="text-xl text-white"> Hello World - Glued Designer </h1>
-      <LiveCursors others={others} />
+      <canvas ref={canvasRef}/>
 
       {cursor && (
         <CursorChat
